@@ -30,6 +30,8 @@
     "ci:test": "jest --ci --coverage && jest --config ./test/jest-e2e.json --ci --coverage --detectOpenHandles"
   },
   "dependencies": {
+    "@nestjs-modules/ioredis": "^2.0.2",
+    "@nestjs/bull": "^10.2.1",
     "@nestjs/common": "^10.0.0",
     "@nestjs/config": "^3.2.3",
     "@nestjs/core": "^10.0.0",
@@ -42,17 +44,20 @@
     "@sendgrid/mail": "^8.1.3",
     "@willsoto/nestjs-prometheus": "^6.0.1",
     "bcrypt": "^5.1.1",
+    "bull": "^4.16.3",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "helmet": "^8.0.0",
+    "ioredis": "^5.4.1",
     "joi": "^17.13.3",
     "moment": "^2.30.1",
     "moment-timezone": "^0.5.45",
     "pg": "^8.13.0",
     "prom-client": "^15.1.3",
+    "redis": "^4.7.0",
     "reflect-metadata": "^0.2.0",
     "rxjs": "^7.8.1",
     "typeorm": "^0.3.20",
@@ -109,7 +114,11 @@
     "coverageDirectory": "./../coverage",
     "testEnvironment": "node",
     "moduleNameMapper": {
-      "^@/(.*)$": "<rootDir>/$1"
+      "^@/(.*)$": "<rootDir>/$1",
+      "^@Base/(.*)$": "<rootDir>/base/$1",
+      "^@Database/(.*)$": "<rootDir>/base/database/$1",
+      "^@Health/(.*)$": "<rootDir>/base/health/$1",
+      "^@Throttler/(.*)$": "<rootDir>/base/throttler/$1"
     }
   }
 }
