@@ -1,2 +1,5 @@
-# nest-guard
-Nest.js app for JWT Authentiation &amp; RBAC Authorization
+# Install
+
+- npm ci
+
+- npm run dev

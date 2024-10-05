@@ -1,0 +1,115 @@
+{
+  "name": "nest-guard",
+  "version": "0.0.1",
+  "description": "Nest.js app for JWT Authentiation & RBAC Authorization",
+  "author": "Marko Anic",
+  "private": true,
+  "license": "UNLICENSED",
+  "engines": {
+    "node": ">=22.9.0"
+  },
+  "scripts": {
+    "dev": "nest start --watch",
+    "build": "nest build",
+    "start": "node dist/main",
+    "typeorm": "ts-node ./node_modules/typeorm/cli",
+    "typeorm:create-migration": "npm run typeorm migration:create ./migrations/%npm_config_name%",
+    "typeorm:generate-migration": "npm run typeorm -- -d ./src/base/database/database.config.ts migration:generate ./migrations/%npm_config_name%",
+    "typeorm:run-migrations": "npm run typeorm migration:run -- -d ./src/base/database/database.config.ts",
+    "typeorm:revert-migration": "npm run typeorm -- -d ./src/base/database/database.config.ts migration:revert",
+    "typecheck": "tsc",
+    "format": "prettier --write \"{src,migrations,test}/**/*.ts\" \"test/**/*.ts\"",
+    "lint": "eslint \"{src,migrations,test}/**/*.ts\" --fix",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
+    "test:e2e": "jest --config ./test/jest-e2e.json --detectOpenHandles",
+    "ci:format": "prettier --check \"{src,migrations,test}/**/*.ts\"",
+    "ci:lint": "eslint \"{src,migrations,test}/**/*.ts\"",
+    "ci:test": "jest --ci --coverage && jest --config ./test/jest-e2e.json --ci --coverage --detectOpenHandles"
+  },
+  "dependencies": {
+    "@nestjs/common": "^10.0.0",
+    "@nestjs/config": "^3.2.3",
+    "@nestjs/core": "^10.0.0",
+    "@nestjs/jwt": "^10.2.0",
+    "@nestjs/mapped-types": "^2.0.5",
+    "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/terminus": "^10.2.3",
+    "@nestjs/throttler": "^6.2.1",
+    "@nestjs/typeorm": "^10.0.2",
+    "@sendgrid/mail": "^8.1.3",
+    "@willsoto/nestjs-prometheus": "^6.0.1",
+    "bcrypt": "^5.1.1",
+    "class-transformer": "^0.5.1",
+    "class-validator": "^0.14.1",
+    "compression": "^1.7.4",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "helmet": "^8.0.0",
+    "joi": "^17.13.3",
+    "moment": "^2.30.1",
+    "moment-timezone": "^0.5.45",
+    "pg": "^8.13.0",
+    "prom-client": "^15.1.3",
+    "reflect-metadata": "^0.2.0",
+    "rxjs": "^7.8.1",
+    "typeorm": "^0.3.20",
+    "uuid": "^10.0.0"
+  },
+  "devDependencies": {
+    "@eslint/compat": "^1.2.0",
+    "@eslint/eslintrc": "^3.1.0",
+    "@eslint/js": "^9.12.0",
+    "@nestjs/cli": "^10.0.0",
+    "@nestjs/schematics": "^10.0.0",
+    "@nestjs/testing": "^10.0.0",
+    "@types/bcrypt": "^5.0.2",
+    "@types/compression": "^1.7.5",
+    "@types/cookie-parser": "^1.4.7",
+    "@types/express": "^5.0.0",
+    "@types/jest": "^29.5.2",
+    "@types/node": "^22.7.4",
+    "@types/supertest": "^6.0.0",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.8.0",
+    "@typescript-eslint/parser": "^8.8.0",
+    "eslint": "^9.12.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-import": "^2.31.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "jest": "^29.5.0",
+    "prettier": "^3.0.0",
+    "source-map-support": "^0.5.21",
+    "supertest": "^7.0.0",
+    "ts-jest": "^29.1.0",
+    "ts-loader": "^9.4.3",
+    "ts-node": "^10.9.1",
+    "tsconfig-paths": "^4.2.0",
+    "typescript": "^5.1.3"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "./src",
+    "modulePaths": [
+      "<rootDir>"
+    ],
+    "testRegex": ".*\\.spec\\.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "collectCoverageFrom": [
+      "**/*.(t|j)s"
+    ],
+    "coverageDirectory": "./../coverage",
+    "testEnvironment": "node",
+    "moduleNameMapper": {
+      "^@/(.*)$": "<rootDir>/$1"
+    }
+  }
+}
