@@ -9,7 +9,12 @@
   },
   "collectCoverageFrom": ["test/**/*.(t|j)s"],
   "coverageDirectory": "./test/coverage",
+
   "moduleNameMapper": {
-    "^@/(.*)$": "<rootDir>src/$1"
+    "^@/(.*)$": "<rootDir>src/$1",
+    "^@Base/(.*)$": "<rootDir>src/base/$1",
+    "^@Database/(.*)$": "<rootDir>src/base/database/$1",
+    "^@Health/(.*)$": "<rootDir>src/base/health/$1",
+    "^@Throttler/(.*)$": "<rootDir>src/base/throttler/$1"
   }
 }

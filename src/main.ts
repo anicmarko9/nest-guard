@@ -6,7 +6,7 @@ import * as compression from 'compression';
 import helmet from 'helmet';
 import { ConfigService } from '@nestjs/config';
 
-import { AppModule } from './app.module';
+import { AppModule } from '@/app.module';
 
 async function bootstrap(): Promise<void> {
   const app: INestApplication<AppModule> = await NestFactory.create(AppModule, { forceCloseConnections: true });
