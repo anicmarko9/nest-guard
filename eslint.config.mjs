@@ -20,11 +20,7 @@ export default [
   { ignores: ['**/.eslintrc.js'] },
 
   ...fixupConfigRules(
-    compat.extends(
-      'plugin:@typescript-eslint/recommended',
-      'plugin:prettier/recommended',
-      'plugin:import/typescript',
-    ),
+    compat.extends('plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended', 'plugin:import/typescript'),
   ),
   {
     plugins: {
@@ -55,6 +51,18 @@ export default [
       '@typescript-eslint/interface-name-prefix': 'off',
       '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/ban-ts-comment': 'off',
+
+      'prettier/prettier': [
+        'error',
+        {
+          semi: true,
+          trailingComma: 'all',
+          singleQuote: true,
+          printWidth: 120,
+          tabWidth: 2,
+          endOfLine: 'lf',
+        },
+      ],
     },
   },
 ];
