@@ -38,6 +38,7 @@
     "@nestjs/jwt": "^10.2.0",
     "@nestjs/mapped-types": "^2.0.5",
     "@nestjs/platform-express": "^10.0.0",
+    "@nestjs/schedule": "^4.1.1",
     "@nestjs/terminus": "^10.2.3",
     "@nestjs/throttler": "^6.2.1",
     "@nestjs/typeorm": "^10.0.2",
@@ -118,7 +119,10 @@
       "^@Base/(.*)$": "<rootDir>/base/$1",
       "^@Database/(.*)$": "<rootDir>/base/database/$1",
       "^@Health/(.*)$": "<rootDir>/base/health/$1",
-      "^@Throttler/(.*)$": "<rootDir>/base/throttler/$1"
+      "^@Throttler/(.*)$": "<rootDir>/base/throttler/$1",
+      "^@Core/(.*)$": "<rootDir>/core/$1",
+      "^@Tasks/(.*)$": "<rootDir>/tasks/$1",
+      "^@Utils/(.*)$": "<rootDir>/Utils/$1"
     }
   }
 }
