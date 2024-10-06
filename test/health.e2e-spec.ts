@@ -47,7 +47,7 @@ describe('HealthController (e2e)', () => {
 
   describe('/api/v1/health/database (GET)', () => {
     it('should return 200 because database is up and running', async () => {
-      const response = await request(app.getHttpServer()).get('/api/v1/health/database'); // Update path to include prefix and version
+      const response = await request(app.getHttpServer()).get('/api/v1/health/database');
 
       expect(response.status).toEqual(200);
 
