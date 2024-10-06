@@ -4,7 +4,6 @@ about: Suggest an idea for this project
 title: 'feat: implement OAuth 2.0 functionality'
 labels: enhancement
 assignees: anicmarko9
-
 ---
 
 # Feature request
