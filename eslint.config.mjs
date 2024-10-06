@@ -38,10 +38,7 @@ export default [
       ecmaVersion: 5,
       sourceType: 'module',
 
-      parserOptions: {
-        project: 'tsconfig.json',
-        tsconfigRootDir: 'D:\\Work\\Repositories\\nest-guard',
-      },
+      parserOptions: { project: 'tsconfig.json', tsconfigRootDir: path.resolve(__dirname) },
     },
 
     rules: {
