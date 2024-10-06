@@ -4,7 +4,6 @@ about: Create a report to help us improve
 title: 'bug: cache does not reset'
 labels: bug
 assignees: anicmarko9
-
 ---
 
 # Bug Report
