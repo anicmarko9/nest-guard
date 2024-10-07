@@ -1,4 +1,4 @@
-name: Node.js CI
+name: ESLint
 
 on:
   push:
@@ -25,4 +25,4 @@ jobs:
       - run: npm run ci:format
       - run: npm run ci:lint
       # - run: npm run ci:test
-      - run: npm run build --if-present
+      - run: npm run build
