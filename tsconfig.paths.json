@@ -10,6 +10,7 @@
       "@Throttler/*": ["base/throttler/*"],
       "@Core/*": ["core/*"],
       "@Tasks/*": ["tasks/*"],
+      "@Emails/*": ["tasks/emails/*"],
       "@Utils/*": ["utils/*"]
     }
   }

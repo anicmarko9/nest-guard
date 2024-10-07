@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
 
-@Module({})
+import { EmailModule } from '@Emails/email.module';
+
+@Module({ imports: [EmailModule] })
 export class TaskModule {}

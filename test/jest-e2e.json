@@ -18,6 +18,7 @@
     "^@Throttler/(.*)$": "<rootDir>src/base/throttler/$1",
     "^@Core/(.*)$": "<rootDir>src/core/$1",
     "^@Tasks/(.*)$": "<rootDir>src/tasks/$1",
+    "^@Emails/(.*)$": "<rootDir>src/tasks/emails/$1",
     "^@Utils/(.*)$": "<rootDir>src/utils/$1"
   }
 }
