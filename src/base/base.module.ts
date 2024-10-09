@@ -43,6 +43,7 @@ import { CustomThrottlerModule } from '@Throttler/throttler.module';
 
         SENDGRID_KEY: Joi.string().required(),
         SENDGRID_FROM: Joi.string().required(),
+        SENDGRID_NAME: Joi.string().required(),
 
         SENDGRID_WELCOME: Joi.string().required(),
         SENDGRID_VERIFY_EMAIL: Joi.string().required(),
