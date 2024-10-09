@@ -1,6 +1,6 @@
 import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
 
-import { MAX_FILE_SIZE, ALLOWED_FILE_EXTENSIONS, ALLOWED_MIME_TYPES } from '@Utils/constants/util.constant';
+import { MAX_FILE_SIZE, ALLOWED_FILE_EXTENSIONS, ALLOWED_MIME_TYPES } from '@Constants/util.constant';
 
 @ValidatorConstraint({ name: 'file-content-validator', async: false })
 export class FileContentValidator implements ValidatorConstraintInterface {

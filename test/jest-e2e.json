@@ -19,6 +19,10 @@
     "^@Core/(.*)$": "<rootDir>src/core/$1",
     "^@Tasks/(.*)$": "<rootDir>src/tasks/$1",
     "^@Emails/(.*)$": "<rootDir>src/tasks/emails/$1",
-    "^@Utils/(.*)$": "<rootDir>src/utils/$1"
+    "^@Utils/(.*)$": "<rootDir>src/utils/$1",
+    "^@Constants/(.*)$": "<rootDir>src/utils/constants/$1",
+    "^@Decorators/(.*)$": "<rootDir>src/utils/decorators/$1",
+    "^@Guards/(.*)$": "<rootDir>src/utils/guards/$1",
+    "^@Validators/(.*)$": "<rootDir>src/utils/validators/$1"
   }
 }
