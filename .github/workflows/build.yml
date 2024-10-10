@@ -1,8 +1,9 @@
-name: ESLint
+name: CI
 
 on:
   push:
     branches: ['main']
+
   pull_request:
     branches: ['main']
 
@@ -10,22 +11,92 @@ jobs:
   build:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16.2-alpine
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ vars.POSTGRES_DATABASE }}
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+      redis:
+        image: redis:alpine3.18
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     strategy:
       matrix:
         node-version: [22.x]
 
-    environment: Production
+    env:
+      TZ: ${{ vars.TZ }}
+
+      PORT: ${{ vars.PORT }}
+
+      THROTTLE_TTL: ${{ vars.THROTTLE_TTL }}
+      THROTTLE_LIMIT: ${{ vars.THROTTLE_LIMIT }}
+
+      FRONT_URL: ${{ vars.FRONT_URL }}
+
+      POSTGRES_HOST: ${{ secrets.POSTGRES_HOST }}
+      POSTGRES_PORT: ${{ vars.POSTGRES_PORT }}
+      POSTGRES_USER: ${{ vars.POSTGRES_USER }}
+      POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+      POSTGRES_DATABASE: ${{ vars.POSTGRES_DATABASE }}
+      POSTGRES_SSL: ${{ vars.POSTGRES_SSL }}
+
+      REDIS_HOST: ${{ secrets.REDIS_HOST }}
+      REDIS_PORT: ${{ vars.REDIS_PORT }}
+
+      JWT_SECRET: ${{ secrets.JWT_SECRET }}
+      JWT_EXPIRES_IN: ${{ vars.JWT_EXPIRES_IN }}
+      JWT_DOMAIN: ${{ vars.JWT_DOMAIN }}
+
+      SENDGRID_KEY: ${{ secrets.SENDGRID_KEY }}
+      SENDGRID_FROM: ${{ vars.SENDGRID_FROM }}
+      SENDGRID_NAME: ${{ vars.SENDGRID_NAME }}
+
+      SENDGRID_VERIFY_EMAIL: ${{ vars.SENDGRID_VERIFY_EMAIL }}
+      SENDGRID_WELCOME: ${{ vars.SENDGRID_WELCOME }}
+      SENDGRID_RESET_PASSWORD: ${{ vars.SENDGRID_RESET_PASSWORD }}
+      SENDGRID_INVITE: ${{ vars.SENDGRID_INVITE }}
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-      - run: npm ci
-      - run: npm run typecheck
-      - run: npm run ci:format
-      - run: npm run ci:lint
-      - run: npm run ci:test
-      - run: npm run build
+
+      - name: Clean Install
+        run: npm ci
+
+      - name: Types
+        run: npm run typecheck
+
+      - name: Prettier
+        run: npm run ci:format
+
+      - name: ESLinter
+        run: npm run ci:lint
+
+      - name: Jest
+        run: npm run ci:test
+
+      - name: Build
+        run: npm run build
