@@ -9,10 +9,10 @@ import * as request from 'supertest';
 
 import { AppModule } from '@/app.module';
 
-describe('HealthController (e2e)', () => {
+describe('HealthController (e2e)', (): void => {
   let app: INestApplication;
 
-  beforeAll(async () => {
+  beforeAll(async (): Promise<void> => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
     }).compile();
@@ -41,14 +41,16 @@ describe('HealthController (e2e)', () => {
     await app.init();
   });
 
-  it('should be defined', () => {
+  it('should be defined', (): void => {
     expect(app).toBeDefined();
   });
 
-  describe('/api/v1/health/database (GET)', () => {
-    it('should return 200 because database is up and running', async () => {
-      const response = await request(app.getHttpServer()).get('/api/v1/health/database');
+  describe('/api/v1/health/database (GET)', (): void => {
+    it('should return 200 because database is up and running', async (): Promise<void> => {
+      const response: request.Response = await request(app.getHttpServer()).get('/api/v1/health/database');
+
       expect(response.status).toEqual(200);
+
       expect(response.body).toEqual({
         status: 'ok',
         info: { database: { status: 'up' } },
@@ -58,7 +60,7 @@ describe('HealthController (e2e)', () => {
     });
   });
 
-  afterAll(async () => {
+  afterAll(async (): Promise<void> => {
     await app?.close?.();
   });
 });
