@@ -76,9 +76,7 @@ jobs:
 
       - name: Create Database
         run: |
-          psql -h ${{ secrets.POSTGRES_HOST }} -U ${{ vars.POSTGRES_USER }} -p ${{ vars.POSTGRES_PORT }} -c "create database ${{ vars.POSTGRES_DATABASE }};"
-        env:
-          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          psql -d "postgresql://${{ vars.POSTGRES_USER }}:${{ secrets.POSTGRES_PASSWORD }}@${{ secrets.POSTGRES_HOST }}:${{ vars.POSTGRES_PORT }}/postgres"  -c "create database ${{ vars.POSTGRES_DATABASE }};"
 
       - name: Clean Install
         run: npm ci
