@@ -22,7 +22,7 @@ jobs:
           - ${{ vars.POSTGRES_PORT }}:5432
 
       redis:
-        image: redis:alpine3.18
+        image: redis:7.4-alpine
         ports:
           - ${{ vars.REDIS_PORT }}:6379
 
