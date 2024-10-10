@@ -71,6 +71,11 @@ jobs:
 
       - name: Init PostgreSQL
         run: |
+          sudo systemctl start postgresql.service
+          sudo systemctl status postgresql.service
+
+      - name: Create Database
+        run: |
           psql -h ${{ secrets.POSTGRES_HOST }} -U ${{ vars.POSTGRES_USER }} -p ${{ vars.POSTGRES_PORT }} -c "create database ${{ vars.POSTGRES_DATABASE }};"
         env:
           PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
