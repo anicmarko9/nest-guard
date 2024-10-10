@@ -12,20 +12,6 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
-        image: postgres:16.2-alpine
-        ports:
-          - 5432:5432
-        env:
-          POSTGRES_USER: ${{ vars.POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ vars.POSTGRES_DATABASE }}
-        options: >-
-          --health-cmd "pg_isready -U postgres"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
       redis:
         image: redis:alpine3.18
         ports:
@@ -82,6 +68,12 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+
+      - name: Init PostgreSQL
+        run: |
+          psql -h ${{ secrets.POSTGRES_HOST }} -U ${{ vars.POSTGRES_USER }} -p ${{ vars.POSTGRES_PORT }} -c "create database ${{ vars.POSTGRES_DATABASE }};"
+        env:
+          PGPASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
 
       - name: Clean Install
         run: npm ci
