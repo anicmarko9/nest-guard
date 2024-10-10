@@ -3,7 +3,7 @@ import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Throttle } from '@nestjs/throttler';
 
-import { ALLOWED_RETRY_TEMPLATES, frontURL } from '@Utils/constants/util.constant';
+import { ALLOWED_RETRY_TEMPLATES, frontURL } from '@Constants/util.constant';
 import { EmailTemplate } from './enums/email.enum';
 import { ClassicResponseDTO } from '@Utils/dto/util.dto';
 import { SendEmailDTO } from './dto/email.dto';

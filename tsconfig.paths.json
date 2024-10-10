@@ -11,7 +11,11 @@
       "@Core/*": ["core/*"],
       "@Tasks/*": ["tasks/*"],
       "@Emails/*": ["tasks/emails/*"],
-      "@Utils/*": ["utils/*"]
+      "@Utils/*": ["utils/*"],
+      "@Constants/*": ["utils/constants/*"],
+      "@Decorators/*": ["utils/decorators/*"],
+      "@Guards/*": ["utils/guards/*"],
+      "@Validators/*": ["utils/validators/*"]
     }
   }
 }

@@ -48,9 +48,7 @@ describe('HealthController (e2e)', () => {
   describe('/api/v1/health/database (GET)', () => {
     it('should return 200 because database is up and running', async () => {
       const response = await request(app.getHttpServer()).get('/api/v1/health/database');
-
       expect(response.status).toEqual(200);
-
       expect(response.body).toEqual({
         status: 'ok',
         info: { database: { status: 'up' } },
@@ -61,6 +59,6 @@ describe('HealthController (e2e)', () => {
   });
 
   afterAll(async () => {
-    await app.close();
+    await app?.close?.();
   });
 });
