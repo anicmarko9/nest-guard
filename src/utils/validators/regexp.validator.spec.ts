@@ -14,7 +14,8 @@ describe('Regular Expressions', (): void => {
       const invalidEmails: string[] = [
         'test@example',
         'user@.com',
-        '@example.com',
+        '1@example.com',
+        '@gmail.com',
         'user@domain..com',
         'USER@DOMAIN.COM',
       ];
