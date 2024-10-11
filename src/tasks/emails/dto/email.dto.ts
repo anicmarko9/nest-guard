@@ -15,7 +15,11 @@ import {
 
 import { EmailTemplate } from '@Emails/enums/email.enum';
 import { emailRegExp } from '@Validators/regexp.validator';
-import { FileContentValidator, FileNameValidator, FileTypeValidator } from '@Validators/file.validator';
+import {
+  FileContentValidator,
+  FileNameValidator,
+  FileTypeValidator,
+} from '@Validators/file.validator';
 
 export class EmailDataDTO {
   @IsEnum(EmailTemplate)

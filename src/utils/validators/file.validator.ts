@@ -1,12 +1,21 @@
-import { ValidationArguments, ValidatorConstraint, ValidatorConstraintInterface } from 'class-validator';
+import {
+  ValidationArguments,
+  ValidatorConstraint,
+  ValidatorConstraintInterface,
+} from 'class-validator';
 
-import { MAX_FILE_SIZE, ALLOWED_FILE_EXTENSIONS, ALLOWED_MIME_TYPES } from '@Constants/util.constant';
+import {
+  MAX_FILE_SIZE,
+  ALLOWED_FILE_EXTENSIONS,
+  ALLOWED_MIME_TYPES,
+} from '@Constants/util.constant';
 
 @ValidatorConstraint({ name: 'file-content-validator', async: false })
 export class FileContentValidator implements ValidatorConstraintInterface {
   validate(content: string): boolean {
     const fileSizeInBytes: number =
-      (content?.length * 3) / 4 - (content?.indexOf?.('=') > 0 ? content?.length - content?.indexOf?.('=') : 0);
+      (content?.length * 3) / 4 -
+      (content?.indexOf?.('=') > 0 ? content?.length - content?.indexOf?.('=') : 0);
 
     return fileSizeInBytes <= MAX_FILE_SIZE;
   }

@@ -37,11 +37,16 @@ export class EmailService {
 
       this.logger.error(error);
 
-      throw new InternalServerErrorException('Something went wrong while sending an email with SendGrid.');
+      throw new InternalServerErrorException(
+        'Something went wrong while sending an email with SendGrid.',
+      );
     }
   }
 
-  private async sendWithSendGrid(data: EmailBodyParams, attachments?: EmailAttachment[]): Promise<void> {
+  private async sendWithSendGrid(
+    data: EmailBodyParams,
+    attachments?: EmailAttachment[],
+  ): Promise<void> {
     sg.setApiKey(this.key);
 
     const from = { name: this.name, email: this.from };
@@ -54,7 +59,9 @@ export class EmailService {
     } catch (error) {
       this.logger.error(error);
 
-      throw new InternalServerErrorException(`Something went wrong while sending an email with SendGrid.`);
+      throw new InternalServerErrorException(
+        `Something went wrong while sending an email with SendGrid.`,
+      );
     }
   }
 

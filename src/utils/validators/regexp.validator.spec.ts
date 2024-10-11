@@ -3,7 +3,11 @@ import { emailRegExp, passwordRegExp } from './regexp.validator';
 describe('Regular Expressions', (): void => {
   describe('emailRegExp', (): void => {
     it('should match valid email addresses', (): void => {
-      const validEmails: string[] = ['test@example.com', 'user.name@domain.co', 'firstname.lastname@sub.domain.com'];
+      const validEmails: string[] = [
+        'test@example.com',
+        'user.name@domain.co',
+        'firstname.lastname@sub.domain.com',
+      ];
 
       validEmails.forEach((email: string): void => {
         expect(emailRegExp.pattern.test(email)).toBe(true);

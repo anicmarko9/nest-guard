@@ -9,7 +9,9 @@ import { ConfigService } from '@nestjs/config';
 import { AppModule } from '@/app.module';
 
 async function bootstrap(): Promise<void> {
-  const app: INestApplication<AppModule> = await NestFactory.create(AppModule, { forceCloseConnections: true });
+  const app: INestApplication<AppModule> = await NestFactory.create(AppModule, {
+    forceCloseConnections: true,
+  });
 
   app.setGlobalPrefix('api');
   app.enableVersioning({ type: VersioningType.URI, defaultVersion: '1' });
@@ -26,7 +28,11 @@ async function bootstrap(): Promise<void> {
   app.use(helmet());
 
   app.useGlobalPipes(
-    new ValidationPipe({ whitelist: true, transform: true, transformOptions: { enableImplicitConversion: true } }),
+    new ValidationPipe({
+      whitelist: true,
+      transform: true,
+      transformOptions: { enableImplicitConversion: true },
+    }),
   );
 
   app.enableShutdownHooks();

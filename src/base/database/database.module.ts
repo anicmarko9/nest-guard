@@ -16,7 +16,10 @@ import { join } from 'path';
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
         database: configService.get<string>('POSTGRES_DATABASE'),
-        ssl: `${configService.get<string>('POSTGRES_SSL')}` === 'true' ? { rejectUnauthorized: true } : false,
+        ssl:
+          `${configService.get<string>('POSTGRES_SSL')}` === 'true'
+            ? { rejectUnauthorized: true }
+            : false,
         entities: [join(__dirname, '../../', '**', '*.entity.{ts,js}')],
         synchronize: false,
         migrations: [join(__dirname, '../../../', 'migrations', '*.{ts,js}')],
@@ -29,7 +32,10 @@ import { join } from 'path';
       inject: [ConfigService],
       useFactory: (configService: ConfigService): BullModuleOptions => ({
         name: 'redis_queue',
-        redis: { host: configService.get<string>('REDIS_HOST'), port: Number(configService.get<string>('REDIS_PORT')) },
+        redis: {
+          host: configService.get<string>('REDIS_HOST'),
+          port: Number(configService.get<string>('REDIS_PORT')),
+        },
         settings: { lockDuration: 24 * 60 * 60 * 1000, stalledInterval: 0 },
       }),
     }),
