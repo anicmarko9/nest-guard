@@ -20,6 +20,7 @@ export default [
   ...fixupConfigRules(
     compat.extends('plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended', 'plugin:import/typescript'),
   ),
+
   {
     plugins: {
       '@typescript-eslint': fixupPluginRules(typescriptEslintEslintPlugin),
@@ -27,10 +28,7 @@ export default [
     },
 
     languageOptions: {
-      globals: {
-        ...globals.node,
-        ...globals.jest,
-      },
+      globals: { ...globals.node, ...globals.jest },
 
       parser: tsParser,
       ecmaVersion: 5,
@@ -49,14 +47,7 @@ export default [
 
       'prettier/prettier': [
         'error',
-        {
-          semi: true,
-          trailingComma: 'all',
-          singleQuote: true,
-          printWidth: 120,
-          tabWidth: 2,
-          endOfLine: 'lf',
-        },
+        { semi: true, trailingComma: 'all', singleQuote: true, printWidth: 100, tabWidth: 2, endOfLine: 'lf' },
       ],
     },
   },

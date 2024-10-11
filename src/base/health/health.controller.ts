@@ -18,7 +18,8 @@ export class HealthController {
   @HealthCheck()
   async checkDatabase(): Promise<HealthCheckResult> {
     return await this.healthService.check([
-      async (): Promise<HealthIndicatorResult> => await this.dbHealthIndicator.pingCheck('database'),
+      async (): Promise<HealthIndicatorResult> =>
+        await this.dbHealthIndicator.pingCheck('database'),
     ]);
   }
 }

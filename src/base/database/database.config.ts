@@ -16,7 +16,10 @@ export default new DataSource({
   username: configService.get<string>('POSTGRES_USER'),
   password: configService.get<string>('POSTGRES_PASSWORD'),
   database: configService.get<string>('POSTGRES_DATABASE'),
-  ssl: `${configService.get<string>('POSTGRES_SSL')}` === 'true' ? { rejectUnauthorized: true } : false,
+  ssl:
+    `${configService.get<string>('POSTGRES_SSL')}` === 'true'
+      ? { rejectUnauthorized: true }
+      : false,
   entities: [join(__dirname, './../../../dist/', '**', '*.entity.{ts,js}')],
   synchronize: false,
   migrations: [join(__dirname, './../../../dist/', 'migrations', '*.{ts,js}')],

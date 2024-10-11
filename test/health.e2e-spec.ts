@@ -33,7 +33,11 @@ describe('HealthController (e2e)', (): void => {
     app.use(helmet());
 
     app.useGlobalPipes(
-      new ValidationPipe({ whitelist: true, transform: true, transformOptions: { enableImplicitConversion: true } }),
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
     );
 
     app.enableShutdownHooks();
@@ -47,7 +51,9 @@ describe('HealthController (e2e)', (): void => {
 
   describe('/api/v1/health/database (GET)', (): void => {
     it('should return 200 because database is up and running', async (): Promise<void> => {
-      const response: request.Response = await request(app.getHttpServer()).get('/api/v1/health/database');
+      const response: request.Response = await request(app.getHttpServer()).get(
+        '/api/v1/health/database',
+      );
 
       expect(response.status).toEqual(200);
 

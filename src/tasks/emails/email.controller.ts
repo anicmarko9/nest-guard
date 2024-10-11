@@ -1,4 +1,11 @@
-import { Controller, Post, HttpCode, HttpStatus, Body, NotImplementedException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  HttpCode,
+  HttpStatus,
+  Body,
+  NotImplementedException,
+} from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
 import { Throttle } from '@nestjs/throttler';
@@ -20,7 +27,10 @@ export class EmailController {
 
     await this.emailQueue.add('send', { data: { ...data, url }, attachments });
 
-    return new ClassicResponseDTO({ message: `Email has been successfully sent.`, statusCode: HttpStatus.OK });
+    return new ClassicResponseDTO({
+      message: `Email has been successfully sent.`,
+      statusCode: HttpStatus.OK,
+    });
   }
 
   private generateURL(template: EmailTemplate): string {
