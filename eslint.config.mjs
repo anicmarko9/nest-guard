@@ -18,7 +18,11 @@ const compat = new FlatCompat({
 
 export default [
   ...fixupConfigRules(
-    compat.extends('plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended', 'plugin:import/typescript'),
+    compat.extends(
+      'plugin:@typescript-eslint/recommended',
+      'plugin:prettier/recommended',
+      'plugin:import/typescript',
+    ),
   ),
 
   {
@@ -47,7 +51,14 @@ export default [
 
       'prettier/prettier': [
         'error',
-        { semi: true, trailingComma: 'all', singleQuote: true, printWidth: 100, tabWidth: 2, endOfLine: 'lf' },
+        {
+          semi: true,
+          trailingComma: 'all',
+          singleQuote: true,
+          printWidth: 100,
+          tabWidth: 2,
+          endOfLine: 'lf',
+        },
       ],
     },
   },
