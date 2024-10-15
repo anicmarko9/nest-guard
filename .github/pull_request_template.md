@@ -1,11 +1,3 @@
----
-name: Pull Request
-about: Submit code changes or documentation updates
-title: 'feat: implement caching for listing personnel'
-labels: enhancement
-assignees: anicmarko9
----
-
 # Pull Request
 
 **Description**  
