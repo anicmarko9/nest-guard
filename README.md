@@ -59,3 +59,4 @@ A backend service built with **Nest.js** to handle user registration, login, ema
 - **eslint**: `npm run ci:format`
 - **prettier**: `npm run ci:lint`
 - **jest**: `npm run ci:test`
+- **build**: `npm run build`
