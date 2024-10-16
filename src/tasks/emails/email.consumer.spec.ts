@@ -4,7 +4,7 @@ import { Job } from 'bull';
 import { ConfigService } from '@nestjs/config';
 import * as sg from '@sendgrid/mail';
 
-import { EmailService } from './email.service';
+import { EmailService } from './email.consumer';
 import { EmailTemplate } from './enums/email.enum';
 
 jest.mock('@sendgrid/mail');
