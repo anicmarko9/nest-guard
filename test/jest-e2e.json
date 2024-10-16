@@ -20,6 +20,7 @@
     "^@Tasks/(.*)$": "<rootDir>src/tasks/$1",
     "^@Emails/(.*)$": "<rootDir>src/tasks/emails/$1",
     "^@Utils/(.*)$": "<rootDir>src/utils/$1",
+    "^@Auth/(.*)$": "<rootDir>src/utils/auth/$1",
     "^@Constants/(.*)$": "<rootDir>src/utils/constants/$1",
     "^@Decorators/(.*)$": "<rootDir>src/utils/decorators/$1",
     "^@Guards/(.*)$": "<rootDir>src/utils/guards/$1",

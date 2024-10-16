@@ -123,6 +123,7 @@
       "^@Tasks/(.*)$": "<rootDir>/tasks/$1",
       "^@Emails/(.*)$": "<rootDir>/tasks/emails/$1",
       "^@Utils/(.*)$": "<rootDir>/utils/$1",
+      "^@Auth/(.*)$": "<rootDir>/utils/auth/$1",
       "^@Constants/(.*)$": "<rootDir>/utils/constants/$1",
       "^@Decorators/(.*)$": "<rootDir>/utils/decorators/$1",
       "^@Guards/(.*)$": "<rootDir>/utils/guards/$1",

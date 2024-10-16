@@ -12,6 +12,7 @@
       "@Tasks/*": ["tasks/*"],
       "@Emails/*": ["tasks/emails/*"],
       "@Utils/*": ["utils/*"],
+      "@Auth/*": ["utils/auth/*"],
       "@Constants/*": ["utils/constants/*"],
       "@Decorators/*": ["utils/decorators/*"],
       "@Guards/*": ["utils/guards/*"],
