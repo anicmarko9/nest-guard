@@ -120,6 +120,7 @@
       "^@Health/(.*)$": "<rootDir>/base/health/$1",
       "^@Throttler/(.*)$": "<rootDir>/base/throttler/$1",
       "^@Core/(.*)$": "<rootDir>/core/$1",
+      "^@Users/(.*)$": "<rootDir>/core/users/$1",
       "^@Tasks/(.*)$": "<rootDir>/tasks/$1",
       "^@Emails/(.*)$": "<rootDir>/tasks/emails/$1",
       "^@Utils/(.*)$": "<rootDir>/utils/$1",

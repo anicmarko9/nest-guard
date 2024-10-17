@@ -9,6 +9,7 @@
       "@Health/*": ["base/health/*"],
       "@Throttler/*": ["base/throttler/*"],
       "@Core/*": ["core/*"],
+      "@Users/*": ["core/users/*"],
       "@Tasks/*": ["tasks/*"],
       "@Emails/*": ["tasks/emails/*"],
       "@Utils/*": ["utils/*"],
