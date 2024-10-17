@@ -34,7 +34,7 @@ export class Profile {
   @Column({ name: 'avatar', type: 'varchar', length: 255, nullable: true })
   avatar: string | null;
 
-  @Column({ name: 'avatar', type: 'text', nullable: true })
+  @Column({ name: 'bio', type: 'text', nullable: true })
   bio: string | null;
 
   @CreateDateColumn({ name: 'created_at', type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
