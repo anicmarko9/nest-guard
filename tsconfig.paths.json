@@ -12,6 +12,7 @@
       "@Management/*": ["core/management/*"],
       "@Settings/*": ["core/settings/*"],
       "@Users/*": ["core/settings/users/*"],
+      "@Profiles/*": ["core/settings/profiles/*"],
       "@Tasks/*": ["tasks/*"],
       "@Emails/*": ["tasks/emails/*"],
       "@Utils/*": ["utils/*"],

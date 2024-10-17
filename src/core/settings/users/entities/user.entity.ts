@@ -12,7 +12,7 @@ export class User {
   @PrimaryColumn({ name: 'id', type: 'uuid', primaryKeyConstraintName: 'PK_User' })
   id: string;
 
-  @Column({ name: 'email', type: 'varchar' })
+  @Column({ name: 'email', type: 'varchar', length: 100 })
   email: string;
 
   @Column({ name: 'password', type: 'varchar' })
