@@ -20,6 +20,7 @@
     "^@Management/(.*)$": "<rootDir>src/core/management/$1",
     "^@Settings/(.*)$": "<rootDir>src/core/settings/$1",
     "^@Users/(.*)$": "<rootDir>src/core/settings/users/$1",
+    "^@Profiles/(.*)$": "<rootDir>src/core/settings/profiles/$1",
     "^@Tasks/(.*)$": "<rootDir>src/tasks/$1",
     "^@Emails/(.*)$": "<rootDir>src/tasks/emails/$1",
     "^@Utils/(.*)$": "<rootDir>src/utils/$1",

@@ -123,6 +123,7 @@
       "^@Management/(.*)$": "<rootDir>/core/management/$1",
       "^@Settings/(.*)$": "<rootDir>/core/settings/$1",
       "^@Users/(.*)$": "<rootDir>/core/settings/users/$1",
+      "^@Profiles/(.*)$": "<rootDir>/core/settings/profiles/$1",
       "^@Tasks/(.*)$": "<rootDir>/tasks/$1",
       "^@Emails/(.*)$": "<rootDir>/tasks/emails/$1",
       "^@Utils/(.*)$": "<rootDir>/utils/$1",
