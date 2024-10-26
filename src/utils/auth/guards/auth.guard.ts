@@ -5,7 +5,7 @@ import { JwtService, JwtVerifyOptions } from '@nestjs/jwt';
 import { RequestWithCookie } from '@Auth/interfaces/auth.interface';
 
 @Injectable()
-export class AuthGuard implements CanActivate {
+export class JWTGuard implements CanActivate {
   constructor(
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,

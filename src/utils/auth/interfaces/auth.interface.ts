@@ -18,3 +18,10 @@ export interface CookiePayload {
 }
 
 export type RequestWithCookie = Request & { user: CookiePayload };
+
+export interface SaveTokenParams {
+  id: string;
+  verifyToken?: string | null;
+  passwordToken?: string | null;
+  inviteToken?: string | null;
+}

@@ -1,13 +1,13 @@
 import { Module } from '@nestjs/common';
+import { BullModule } from '@nestjs/bull';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { UserController } from './user.controller';
 import { UserService } from './user.service';
 import { User } from './entities/user.entity';
-import { Token } from './entities/token.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([User, Token])],
+  imports: [BullModule.registerQueue({ name: 'email' }), TypeOrmModule.forFeature([User])],
   controllers: [UserController],
   providers: [UserService],
 })

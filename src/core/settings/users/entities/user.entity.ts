@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
+  Unique,
 } from 'typeorm';
 
 @Entity({ name: 'users' })
+@Unique('UQ_User_email', ['email'])
 export class User {
   @PrimaryColumn({ name: 'id', type: 'uuid', primaryKeyConstraintName: 'PK_User' })
   id: string;

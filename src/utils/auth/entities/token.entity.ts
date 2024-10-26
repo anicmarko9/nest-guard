@@ -1,8 +1,11 @@
-import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn } from 'typeorm';
+import { Entity, PrimaryColumn, Column, OneToOne, JoinColumn, Index } from 'typeorm';
 
-import { User } from './user.entity';
+import { User } from '@Users/entities/user.entity';
 
 @Entity({ name: 'tokens' })
+@Index('IDX_Token_verify', ['verifyToken'])
+@Index('IDX_Token_password', ['passwordToken'])
+@Index('IDX_Token_invite', ['inviteToken'])
 export class Token {
   @PrimaryColumn({ name: 'id', type: 'uuid', primaryKeyConstraintName: 'PK_Token' })
   id: string;

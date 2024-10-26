@@ -1,11 +1,19 @@
-import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  InternalServerErrorException,
+  Logger,
+} from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository, QueryFailedError } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
 import * as bcrypt from 'bcrypt';
 import { CookieOptions, Response } from 'express';
 
-import { CreateCookieParams, JWTCookie } from './interfaces/auth.interface';
+import { Token } from './entities/token.entity';
+import { CreateCookieParams, JWTCookie, SaveTokenParams } from './interfaces/auth.interface';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +22,7 @@ export class AuthService {
   constructor(
     private readonly configService: ConfigService,
     private readonly jwtService: JwtService,
+    @InjectRepository(Token) private readonly token: Repository<Token>,
   ) {}
 
   private readonly size: number = 32;
@@ -60,6 +69,14 @@ export class AuthService {
     }
   }
 
+  async saveToken(params: SaveTokenParams): Promise<void> {
+    try {
+      await this.token.save(params);
+    } catch (error) {
+      this.handleError(error);
+    }
+  }
+
   private setCookieOptions(): CookieOptions {
     const expires: Date = new Date(Date.now() + this.jwtExpiresInMilliseconds);
 
@@ -87,5 +104,14 @@ export class AuthService {
     cookies.forEach((cookie: string): void => {
       res.clearCookie(cookie, { domain: this.jwtDomain });
     });
+  }
+
+  private handleError(error: unknown): never {
+    if (error instanceof QueryFailedError && error?.driverError?.constraint === 'FK_Token_User')
+      throw new ConflictException('Could not save tokens for non-existing user.');
+
+    this.logger.error(error);
+
+    throw new InternalServerErrorException(`Something went wrong while saving tokens for a user.`);
   }
 }
