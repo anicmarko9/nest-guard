@@ -77,12 +77,6 @@ export class AuthService {
     }
   }
 
-  private setCookieOptions(): CookieOptions {
-    const expires: Date = new Date(Date.now() + this.jwtExpiresInMilliseconds);
-
-    return { httpOnly: true, expires, secure: true, domain: this.jwtDomain };
-  }
-
   async createCookie(params: CreateCookieParams): Promise<JWTCookie> {
     const options: CookieOptions = this.setCookieOptions();
 
@@ -104,6 +98,12 @@ export class AuthService {
     cookies.forEach((cookie: string): void => {
       res.clearCookie(cookie, { domain: this.jwtDomain });
     });
+  }
+
+  private setCookieOptions(): CookieOptions {
+    const expires: Date = new Date(Date.now() + this.jwtExpiresInMilliseconds);
+
+    return { httpOnly: true, expires, secure: true, domain: this.jwtDomain };
   }
 
   private handleError(error: unknown): never {
