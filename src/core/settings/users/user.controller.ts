@@ -13,15 +13,15 @@ import {
 } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { Response } from 'express';
 
 import { UserService } from './user.service';
 import { AuthService } from '@Auth/auth.service';
 import { User } from './entities/user.entity';
+import { Token } from '@Auth/entities/token.entity';
 import { EmailTemplate } from '@Emails/enums/email.enum';
 import { frontURL } from '@Constants/util.constant';
 import { CredentialsDTO, CryptoTokenDTO, FetchUserDTO, SignupCredentials } from './dto/user.dto';
-import { Response } from 'express';
-import { Token } from '@/utils/auth/entities/token.entity';
 
 @Controller()
 export class UserController {
