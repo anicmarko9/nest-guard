@@ -1,11 +1,12 @@
 import {
+  BadRequestException,
   ConflictException,
   Injectable,
   InternalServerErrorException,
   Logger,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository, QueryFailedError } from 'typeorm';
+import { Repository, QueryFailedError, FindOptionsWhere } from 'typeorm';
 import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as crypto from 'crypto';
@@ -13,7 +14,12 @@ import * as bcrypt from 'bcrypt';
 import { CookieOptions, Response } from 'express';
 
 import { Token } from './entities/token.entity';
-import { CreateCookieParams, JWTCookie, SaveTokenParams } from './interfaces/auth.interface';
+import {
+  CreateCookieParams,
+  JWTCookie,
+  SaveTokenParams,
+  UpdateTokenParams,
+} from './interfaces/auth.interface';
 
 @Injectable()
 export class AuthService {
@@ -69,7 +75,15 @@ export class AuthService {
     }
   }
 
-  async saveToken(params: SaveTokenParams): Promise<void> {
+  async findToken(params: FindOptionsWhere<Token> | FindOptionsWhere<Token>[]): Promise<string> {
+    const token: Token | null = await this.token.findOneBy(params);
+
+    if (!token) throw new BadRequestException('Invalid credentials.');
+
+    return token?.id;
+  }
+
+  async createToken(params: SaveTokenParams): Promise<void> {
     try {
       await this.token.save(params);
     } catch (error) {
@@ -77,10 +91,8 @@ export class AuthService {
     }
   }
 
-  private setCookieOptions(): CookieOptions {
-    const expires: Date = new Date(Date.now() + this.jwtExpiresInMilliseconds);
-
-    return { httpOnly: true, expires, secure: true, domain: this.jwtDomain };
+  async updateToken(id: string, params: UpdateTokenParams): Promise<void> {
+    await this.token.update({ id }, params);
   }
 
   async createCookie(params: CreateCookieParams): Promise<JWTCookie> {
@@ -104,6 +116,12 @@ export class AuthService {
     cookies.forEach((cookie: string): void => {
       res.clearCookie(cookie, { domain: this.jwtDomain });
     });
+  }
+
+  private setCookieOptions(): CookieOptions {
+    const expires: Date = new Date(Date.now() + this.jwtExpiresInMilliseconds);
+
+    return { httpOnly: true, expires, secure: true, domain: this.jwtDomain };
   }
 
   private handleError(error: unknown): never {

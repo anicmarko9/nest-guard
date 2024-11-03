@@ -25,3 +25,7 @@ export interface SaveTokenParams {
   passwordToken?: string | null;
   inviteToken?: string | null;
 }
+
+export interface UpdateTokenParams extends Omit<SaveTokenParams, 'id'> {
+  verified?: boolean;
+}
