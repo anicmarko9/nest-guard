@@ -6,7 +6,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { QueryFailedError, Repository } from 'typeorm';
+import { FindOptionsWhere, QueryFailedError, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import { User } from './entities/user.entity';
@@ -18,8 +18,8 @@ export class UserService {
 
   constructor(@InjectRepository(User) private readonly user: Repository<User>) {}
 
-  async find(id: string): Promise<User> {
-    const user: User | null = await this.user.findOneBy({ id });
+  async find(filters: FindOptionsWhere<User> | FindOptionsWhere<User>[]): Promise<User> {
+    const user: User | null = await this.user.findOneBy(filters);
 
     if (!user) throw new NotFoundException(`User not found.`);
 
@@ -39,7 +39,7 @@ export class UserService {
   }
 
   async delete(id: string): Promise<void> {
-    const user: User = await this.find(id);
+    const user: User = await this.find({ id });
 
     try {
       await this.user.remove(user);

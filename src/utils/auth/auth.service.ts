@@ -75,12 +75,12 @@ export class AuthService {
     }
   }
 
-  async findToken(params: FindOptionsWhere<Token> | FindOptionsWhere<Token>[]): Promise<string> {
+  async findToken(params: FindOptionsWhere<Token> | FindOptionsWhere<Token>[]): Promise<Token> {
     const token: Token | null = await this.token.findOneBy(params);
 
     if (!token) throw new BadRequestException('Invalid credentials.');
 
-    return token?.id;
+    return token;
   }
 
   async createToken(params: SaveTokenParams): Promise<void> {

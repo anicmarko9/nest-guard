@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   Controller,
   HttpCode,
@@ -8,17 +9,19 @@ import {
   Patch,
   Post,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { Response } from 'express';
 
 import { UserService } from './user.service';
 import { AuthService } from '@Auth/auth.service';
 import { User } from './entities/user.entity';
+import { Token } from '@Auth/entities/token.entity';
 import { EmailTemplate } from '@Emails/enums/email.enum';
 import { frontURL } from '@Constants/util.constant';
-import { CryptoTokenDTO, FetchUserDTO, SignupCredentials } from './dto/user.dto';
-import { Response } from 'express';
+import { CredentialsDTO, CryptoTokenDTO, FetchUserDTO, SignupCredentials } from './dto/user.dto';
 
 @Controller()
 export class UserController {
@@ -63,12 +66,12 @@ export class UserController {
     // Verify User
 
     const hashedToken: string = this.authService.cryptoHash(token);
-    const userId: string = await this.authService.findToken({ verifyToken: hashedToken });
-    await this.authService.updateToken(userId, { verified: true, verifyToken: null });
+    const { id }: Token = await this.authService.findToken({ verifyToken: hashedToken });
+    await this.authService.updateToken(id, { verified: true, verifyToken: null });
 
     // Find User
 
-    const user: User = await this.userService.find(userId);
+    const user: User = await this.userService.find({ id });
 
     // Send "welcome" Email
 
@@ -81,7 +84,40 @@ export class UserController {
 
     // Set JWT Cookie
 
-    const { jwt, options } = await this.authService.createCookie({ sub: userId, verified: true });
+    const { jwt, options } = await this.authService.createCookie({ sub: id, verified: true });
+    res.cookie('jwt', jwt, options);
+
+    return new FetchUserDTO(user);
+  }
+
+  @Post('auth/login')
+  @HttpCode(HttpStatus.OK)
+  async login(
+    @Body() { email, password }: CredentialsDTO,
+    @Res({ passthrough: true }) res: Response,
+  ): Promise<FetchUserDTO> {
+    // Find User
+
+    const user: User = await this.userService.find({ email });
+
+    // Authenticate
+
+    const promises: Promise<Token | boolean>[] = [];
+
+    promises.push(this.authService.findToken({ id: user.id }));
+    promises.push(this.authService.bcryptCompare(password, user.password));
+
+    const [{ verified }, match] = await Promise.all([
+      promises?.[0] as Promise<Token>,
+      promises?.[1] as Promise<boolean>,
+    ]);
+
+    if (!verified) throw new UnauthorizedException('Email not verified.');
+    if (!match) throw new BadRequestException('Incorrect password.');
+
+    // Set JWT Cookie
+
+    const { jwt, options } = await this.authService.createCookie({ sub: user.id, verified: true });
     res.cookie('jwt', jwt, options);
 
     return new FetchUserDTO(user);
