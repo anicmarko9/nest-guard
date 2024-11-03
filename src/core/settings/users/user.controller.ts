@@ -26,9 +26,7 @@ export class UserController {
 
   @Post('auth/register')
   @HttpCode(HttpStatus.CREATED)
-  async register(@Body() body: SignupCredentials): Promise<FetchUserDTO> {
-    const { email, password } = body;
-
+  async register(@Body() { email, password }: SignupCredentials): Promise<FetchUserDTO> {
     // Create New User
 
     const hashedPassword: string = await this.authService.bcryptHash(password);
