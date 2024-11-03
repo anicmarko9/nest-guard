@@ -2,6 +2,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Get,
   HttpCode,
   HttpStatus,
   NotImplementedException,
@@ -22,6 +23,7 @@ import { Token } from '@Auth/entities/token.entity';
 import { EmailTemplate } from '@Emails/enums/email.enum';
 import { frontURL } from '@Constants/util.constant';
 import { CredentialsDTO, CryptoTokenDTO, FetchUserDTO, SignupCredentials } from './dto/user.dto';
+import { ClassicResponseDTO } from '@/utils/dto/util.dto';
 
 @Controller()
 export class UserController {
@@ -54,6 +56,8 @@ export class UserController {
       data: { template, to: [email], dynamicTemplateData: { url } },
     });
 
+    // Return User info
+
     return new FetchUserDTO(user);
   }
 
@@ -85,7 +89,9 @@ export class UserController {
     // Set JWT Cookie
 
     const { jwt, options } = await this.authService.createCookie({ sub: id, verified: true });
-    res.cookie('jwt', jwt, options);
+    res.cookie('user', jwt, options);
+
+    // Return User info
 
     return new FetchUserDTO(user);
   }
@@ -118,9 +124,23 @@ export class UserController {
     // Set JWT Cookie
 
     const { jwt, options } = await this.authService.createCookie({ sub: user.id, verified: true });
-    res.cookie('jwt', jwt, options);
+    res.cookie('user', jwt, options);
+
+    // Return User info
 
     return new FetchUserDTO(user);
+  }
+
+  @Get('auth/logout')
+  @HttpCode(HttpStatus.OK)
+  logout(@Res({ passthrough: true }) res: Response): ClassicResponseDTO {
+    // Remove JWT Cookie
+
+    this.authService.deleteCookies(res, ['user']);
+
+    // Return Success message
+
+    return new ClassicResponseDTO({ message: 'Success', statusCode: HttpStatus.OK });
   }
 
   private getMiddlePath(template: EmailTemplate): string {
