@@ -50,7 +50,7 @@ export class EmailService {
     sg.setApiKey(this.key);
 
     const from = { name: this.name, email: this.from };
-    const { to, template, ...dynamicTemplateData } = data;
+    const { to, template, dynamicTemplateData } = data;
 
     const templateId = this.setTemplate(template);
 
