@@ -16,7 +16,7 @@ import { EmailTemplate } from '@Emails/enums/email.enum';
 import { frontURL } from '@Constants/util.constant';
 import { FetchUserDTO, SignupCredentials } from './dto/user.dto';
 
-@Controller('users')
+@Controller()
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -24,7 +24,7 @@ export class UserController {
     @InjectQueue('email') private emailQueue: Queue,
   ) {}
 
-  @Post('register')
+  @Post('auth/register')
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() body: SignupCredentials): Promise<FetchUserDTO> {
     const { email, password } = body;
