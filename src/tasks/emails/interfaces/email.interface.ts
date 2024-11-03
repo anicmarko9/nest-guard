@@ -8,9 +8,7 @@ export interface SendEmailParams {
 export interface EmailBodyParams {
   template: EmailTemplate;
   to: string[];
-  url?: string;
-  companyName?: string;
-  companyOwnerName?: string;
+  dynamicTemplateData?: { [key: string]: string };
 }
 
 export interface EmailAttachment {
