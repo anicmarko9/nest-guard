@@ -34,7 +34,7 @@ import {
 import { ClassicResponseDTO } from '@/utils/dto/util.dto';
 
 @Throttle({ throttler: { limit: 10, ttl: 60000 } })
-@Controller()
+@Controller('users')
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -42,7 +42,7 @@ export class UserController {
     @InjectQueue('email') private emailQueue: Queue,
   ) {}
 
-  @Post('auth/register')
+  @Post('register')
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() { email, password }: SignupCredentials): Promise<FetchUserDTO> {
     // Create New User
@@ -70,7 +70,7 @@ export class UserController {
     return new FetchUserDTO(user);
   }
 
-  @Patch('auth/verify-email/:token')
+  @Patch('verify-email/:token')
   @HttpCode(HttpStatus.OK)
   async verifyEmail(
     @Param() { token }: CryptoTokenDTO,
@@ -105,7 +105,7 @@ export class UserController {
     return new FetchUserDTO(user);
   }
 
-  @Post('auth/login')
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(
     @Body() { email, password }: CredentialsDTO,
@@ -140,7 +140,7 @@ export class UserController {
     return new FetchUserDTO(user);
   }
 
-  @Get('auth/logout')
+  @Get('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) res: Response): ClassicResponseDTO {
     // Remove JWT Cookie
@@ -152,7 +152,7 @@ export class UserController {
     return new ClassicResponseDTO({ message: 'Success', statusCode: HttpStatus.OK });
   }
 
-  @Post('auth/forgot-password')
+  @Post('forgot-password')
   @HttpCode(HttpStatus.OK)
   async forgotPassword(@Body() { email }: ForgotPasswordDTO): Promise<ClassicResponseDTO> {
     // Find User
