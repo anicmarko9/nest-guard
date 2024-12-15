@@ -1,6 +1,7 @@
 import {
   BadRequestException,
   Body,
+  ConflictException,
   Controller,
   Get,
   HttpCode,
@@ -14,6 +15,7 @@ import {
 } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { Throttle } from '@nestjs/throttler';
 import { Response } from 'express';
 
 import { UserService } from './user.service';
@@ -22,10 +24,17 @@ import { User } from './entities/user.entity';
 import { Token } from '@Auth/entities/token.entity';
 import { EmailTemplate } from '@Emails/enums/email.enum';
 import { frontURL } from '@Constants/util.constant';
-import { CredentialsDTO, CryptoTokenDTO, FetchUserDTO, SignupCredentials } from './dto/user.dto';
+import {
+  CredentialsDTO,
+  CryptoTokenDTO,
+  FetchUserDTO,
+  ForgotPasswordDTO,
+  SignupCredentials,
+} from './dto/user.dto';
 import { ClassicResponseDTO } from '@/utils/dto/util.dto';
 
-@Controller()
+@Throttle({ throttler: { limit: 10, ttl: 60000 } })
+@Controller('users')
 export class UserController {
   constructor(
     private readonly userService: UserService,
@@ -33,7 +42,7 @@ export class UserController {
     @InjectQueue('email') private emailQueue: Queue,
   ) {}
 
-  @Post('auth/register')
+  @Post('register')
   @HttpCode(HttpStatus.CREATED)
   async register(@Body() { email, password }: SignupCredentials): Promise<FetchUserDTO> {
     // Create New User
@@ -61,7 +70,7 @@ export class UserController {
     return new FetchUserDTO(user);
   }
 
-  @Patch('auth/verify-email/:token')
+  @Patch('verify-email/:token')
   @HttpCode(HttpStatus.OK)
   async verifyEmail(
     @Param() { token }: CryptoTokenDTO,
@@ -96,7 +105,7 @@ export class UserController {
     return new FetchUserDTO(user);
   }
 
-  @Post('auth/login')
+  @Post('login')
   @HttpCode(HttpStatus.OK)
   async login(
     @Body() { email, password }: CredentialsDTO,
@@ -131,7 +140,7 @@ export class UserController {
     return new FetchUserDTO(user);
   }
 
-  @Get('auth/logout')
+  @Get('logout')
   @HttpCode(HttpStatus.OK)
   logout(@Res({ passthrough: true }) res: Response): ClassicResponseDTO {
     // Remove JWT Cookie
@@ -141,6 +150,42 @@ export class UserController {
     // Return Success message
 
     return new ClassicResponseDTO({ message: 'Success', statusCode: HttpStatus.OK });
+  }
+
+  @Post('forgot-password')
+  @HttpCode(HttpStatus.OK)
+  async forgotPassword(@Body() { email }: ForgotPasswordDTO): Promise<ClassicResponseDTO> {
+    // Find User
+
+    const { id }: User = await this.userService.find({ email });
+
+    // Check if email is verified
+
+    const token: Token = await this.authService.findToken({ id });
+    if (!token?.verified) throw new ConflictException('Email not verified.');
+
+    // Generate "verify-email" Token
+
+    const cryptoToken: string = this.authService.cryptoGenerate();
+    const hashedToken: string = this.authService.cryptoHash(cryptoToken);
+
+    await this.authService.createToken({ id, passwordToken: hashedToken });
+
+    // Send "reset-password" Email
+
+    const template: EmailTemplate = EmailTemplate.RESET_PASSWORD;
+    const url: string = this.generateUrl(template, cryptoToken);
+
+    await this.emailQueue.add('send', {
+      data: { template, to: [email], dynamicTemplateData: { url } },
+    });
+
+    // Return Success message
+
+    return new ClassicResponseDTO({
+      message: 'Email to reset password has been sent.',
+      statusCode: HttpStatus.OK,
+    });
   }
 
   private getMiddlePath(template: EmailTemplate): string {

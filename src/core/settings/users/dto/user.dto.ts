@@ -1,8 +1,8 @@
-import { OmitType } from '@nestjs/mapped-types';
+import { Exclude } from 'class-transformer';
+import { OmitType, PickType } from '@nestjs/mapped-types';
 import { IsString, IsNotEmpty, Matches, IsOptional, IsBoolean } from 'class-validator';
 
 import { emailRegExp, passwordRegExp } from '@Validators/regexp.validator';
-import { Exclude } from 'class-transformer';
 
 export class FetchUserDTO {
   constructor(partial: Partial<FetchUserDTO>) {
@@ -48,3 +48,5 @@ export class CryptoTokenDTO {
   @IsNotEmpty()
   token: string;
 }
+
+export class ForgotPasswordDTO extends PickType(CredentialsDTO, ['email'] as const) {}
