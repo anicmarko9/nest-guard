@@ -24,15 +24,17 @@ import { User } from './entities/user.entity';
 import { Token } from '@Auth/entities/token.entity';
 import { EmailTemplate } from '@Emails/enums/email.enum';
 import { frontURL } from '@Constants/util.constant';
+import { UpdateTokenParams } from '@Auth/interfaces/auth.interface';
+import { ClassicResponseDTO } from '@Utils/dto/util.dto';
 import {
   CredentialsDTO,
   CryptoTokenDTO,
   FetchUserDTO,
   ForgotPasswordDTO,
+  ResendEmailDTO,
   ResetPasswordDTO,
   SignupCredentials,
 } from './dto/user.dto';
-import { ClassicResponseDTO } from '@/utils/dto/util.dto';
 
 @Throttle({ throttler: { limit: 10, ttl: 60000 } })
 @Controller('users')
@@ -215,6 +217,53 @@ export class UserController {
     // Return User info
 
     return new FetchUserDTO(updatedUser);
+  }
+
+  @Throttle({ throttler: { limit: 2, ttl: 60000 } })
+  @Post('resend-email')
+  @HttpCode(HttpStatus.OK)
+  async resendEmail(@Body() { email, template }: ResendEmailDTO): Promise<ClassicResponseDTO> {
+    // Find User
+
+    const { id }: User = await this.userService.find({ email });
+
+    // Check if email is verified
+
+    const { verified }: Token = await this.authService.findToken({ id });
+
+    if (template === EmailTemplate.VERIFY_EMAIL && verified)
+      throw new ConflictException('Email already verified.');
+    if (template === EmailTemplate.RESET_PASSWORD && !verified)
+      throw new ConflictException('Email not verified.');
+
+    // Generate Token
+
+    const token: string = this.authService.cryptoGenerate();
+    const hashedToken: string = this.authService.cryptoHash(token);
+
+    // Update Token
+
+    const updateTokenParams: UpdateTokenParams =
+      template === EmailTemplate.RESET_PASSWORD
+        ? { passwordToken: hashedToken }
+        : { verifyToken: hashedToken };
+
+    await this.authService.updateToken(id, { ...updateTokenParams });
+
+    // Send ${template} Email
+
+    const url: string = this.generateUrl(template, token);
+
+    await this.emailQueue.add('send', {
+      data: { template, to: [email], dynamicTemplateData: { url } },
+    });
+
+    // Return Success message
+
+    return new ClassicResponseDTO({
+      message: 'Email has been resent.',
+      statusCode: HttpStatus.OK,
+    });
   }
 
   private getMiddlePath(template: EmailTemplate): string {

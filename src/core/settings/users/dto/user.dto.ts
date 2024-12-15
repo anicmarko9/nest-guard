@@ -1,8 +1,9 @@
 import { Exclude } from 'class-transformer';
 import { OmitType, PickType } from '@nestjs/mapped-types';
-import { IsString, IsNotEmpty, Matches, IsOptional, IsBoolean } from 'class-validator';
+import { IsString, IsNotEmpty, Matches, IsOptional, IsBoolean, IsEnum } from 'class-validator';
 
 import { emailRegExp, passwordRegExp } from '@Validators/regexp.validator';
+import { EmailTemplate } from '@Emails/enums/email.enum';
 
 export class FetchUserDTO {
   constructor(partial: Partial<FetchUserDTO>) {
@@ -52,3 +53,8 @@ export class CryptoTokenDTO {
 export class ForgotPasswordDTO extends PickType(CredentialsDTO, ['email'] as const) {}
 
 export class ResetPasswordDTO extends PickType(CredentialsDTO, ['password'] as const) {}
+
+export class ResendEmailDTO extends PickType(CredentialsDTO, ['email'] as const) {
+  @IsEnum(EmailTemplate)
+  template: EmailTemplate;
+}
