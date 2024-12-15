@@ -10,7 +10,7 @@ import { FindOptionsWhere, QueryFailedError, Repository } from 'typeorm';
 import { v4 as uuid } from 'uuid';
 
 import { User } from './entities/user.entity';
-import { CreateUserParams } from './interfaces/user.interface';
+import { CreateUserParams, UpdateUserParams } from './interfaces/user.interface';
 
 @Injectable()
 export class UserService {
@@ -38,6 +38,14 @@ export class UserService {
     }
   }
 
+  async update(user: User, params: UpdateUserParams): Promise<User> {
+    try {
+      return await this.user.save({ ...user, ...params });
+    } catch (error) {
+      this.handleError(error, 'updating');
+    }
+  }
+
   async delete(id: string): Promise<void> {
     const user: User = await this.find({ id });
 
@@ -52,7 +60,7 @@ export class UserService {
 
   private handleError(error: unknown, action: string): never {
     if (error instanceof QueryFailedError && error?.driverError?.constraint === 'UQ_User_email')
-      throw new ConflictException('You already created an account. Try signing in.');
+      throw new ConflictException('This email is already in use.');
 
     this.logger.error(error);
 
