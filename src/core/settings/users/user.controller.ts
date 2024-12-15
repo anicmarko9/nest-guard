@@ -29,6 +29,7 @@ import {
   CryptoTokenDTO,
   FetchUserDTO,
   ForgotPasswordDTO,
+  ResetPasswordDTO,
   SignupCredentials,
 } from './dto/user.dto';
 import { ClassicResponseDTO } from '@/utils/dto/util.dto';
@@ -186,6 +187,34 @@ export class UserController {
       message: 'Email to reset password has been sent.',
       statusCode: HttpStatus.OK,
     });
+  }
+
+  @Patch('reset-password/:token')
+  @HttpCode(HttpStatus.OK)
+  async resetPassword(
+    @Param() { token }: CryptoTokenDTO,
+    @Body() { password }: ResetPasswordDTO,
+  ): Promise<FetchUserDTO> {
+    // Find token
+
+    const hashedToken: string = this.authService.cryptoHash(token);
+    const { id }: Token = await this.authService.findToken({ passwordToken: hashedToken });
+
+    // Check if new password is the same as the previous one
+
+    const user: User = await this.userService.find({ id });
+    const match = await this.authService.bcryptCompare(password, user?.password);
+    if (match) throw new BadRequestException('Password cannot be the same as the previous one.');
+
+    // Update password
+
+    const hashedPassword: string = await this.authService.bcryptHash(password);
+    await this.authService.updateToken(id, { passwordToken: null });
+    const updatedUser: User = await this.userService.update(user, { password: hashedPassword });
+
+    // Return User info
+
+    return new FetchUserDTO(updatedUser);
   }
 
   private getMiddlePath(template: EmailTemplate): string {

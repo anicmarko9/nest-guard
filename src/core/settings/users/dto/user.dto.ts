@@ -50,3 +50,5 @@ export class CryptoTokenDTO {
 }
 
 export class ForgotPasswordDTO extends PickType(CredentialsDTO, ['email'] as const) {}
+
+export class ResetPasswordDTO extends PickType(CredentialsDTO, ['password'] as const) {}
