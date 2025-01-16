@@ -9,7 +9,7 @@ A backend service built with **Nest.js** to handle user registration, login, ema
 - **Bull Queue** (Redis)
 - **JWT** Authentication
 - **SendGrid** (for emails)
-- **Prettier**, **ESLint**, **Jest** (unit & e2e testing)
+- **Prettier**, **ESLint**, **Jest**
 
 ## Features
 
