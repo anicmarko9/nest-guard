@@ -31,7 +31,7 @@ import { CustomThrottlerModule } from '@Throttler/throttler.module';
         POSTGRES_PORT: Joi.string().required(),
         POSTGRES_USER: Joi.string().required(),
         POSTGRES_PASSWORD: Joi.string().required(),
-        POSTGRES_DATABASE: Joi.string().required(),
+        POSTGRES_DB: Joi.string().required(),
         POSTGRES_SSL: Joi.string().required(),
 
         REDIS_HOST: Joi.string().required(),
