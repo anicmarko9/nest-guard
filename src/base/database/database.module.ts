@@ -15,7 +15,7 @@ import { join } from 'path';
         port: Number(configService.get<string>('POSTGRES_PORT')),
         username: configService.get<string>('POSTGRES_USER'),
         password: configService.get<string>('POSTGRES_PASSWORD'),
-        database: configService.get<string>('POSTGRES_DATABASE'),
+        database: configService.get<string>('POSTGRES_DB'),
         ssl:
           `${configService.get<string>('POSTGRES_SSL')}` === 'true'
             ? { rejectUnauthorized: true }
